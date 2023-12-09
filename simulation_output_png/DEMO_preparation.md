@@ -1,0 +1,21 @@
+- parameters bits content:
+  - rwrwrw : 所有人皆有讀取與寫入權限
+  - rwrw-- : 檔案創建者與同組成員才有讀寫權限
+  - rw---- : only 檔案擁有者才有讀寫權限
+  - rw-wr- : 檔案擁有者有讀寫權限，同組成員只可寫入，其他人只能讀取
+------ 
+- 幾種可能情形:
+  - 讀取同時，另一人要求寫入，啟動檔案保護機制
+    - 跳出訊息:檔案忙碌中、請稍後再試
+  - 檔案大小不同的影響 :
+    - 檔案足夠大，可以試驗上述檔案保護機制(thread mutex operation)
+    - server.c (108, 173) pthread_mutex_lock(&changemodeMutex); // 防止衝突
+    - server.c (863)  pthread_create(&clientThreads[clientCount], NULL, service, (void *)&clients[clientCount]); // 建立client端執行緒
+    - mutex 確保數個process 在一個時間點上，只能有一個process 存取單項資源，而semaphore 則是讓數個producer 與數個consumer 在訊號上進行合作
+------
+- 重要函式與功能位置:
+  - [x] capability_list
+  - [x] group : AOS:0 CSE:1
+  - [x] password.txt : 使用者編號、編組、使用者姓名(ex: Brian:1:0 編號:1、組別:0)  
+  - [x] server.c (588) service function 主要傳值與指令判定檔案傳輸
+  - [x] server.c (181) check permission 檢查檔案相關存取權限
