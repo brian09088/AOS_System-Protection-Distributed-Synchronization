@@ -1,0 +1,6 @@
+Brian:0:0
+Alex:1:0
+Bob:2:0
+Cindy:3:1
+David:4:1
+Eric:5:1
